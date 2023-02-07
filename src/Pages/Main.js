@@ -9,12 +9,18 @@ import GuessTimer from "../components/GuessTimer";
 import Chat from "../components/Chat";
 import ScoreModal from "../components/ScoreModal";
 
+const port = "https://draw-guys-server.onrender.com";
+
 const socket = io.connect("http://localhost:3001");
 
 function Main() {
 
     const location = useLocation();
     const nickname = location.state.nickname;
+
+    useEffect(() => {
+        socket.emit("nickname", nickname);
+    }, [])
 
     const [isDrawing, setIsDrawing] = useState(false);
     const [showTimer, setShowTimer] = useState(false);
@@ -24,10 +30,12 @@ function Main() {
     const [displayScore, setDisplayScore] = useState(false);
     const [userScore, setUserScore] = useState([]);
     const [round, setRound] = useState(0);
+    const [nextPlayer, setNextPlayer] = useState(false);
 
     useEffect(() => {
         socket.on("who should draw", (data) => {
 
+            setNextPlayer(false);
             console.log("data: ", data.id, data.word);
             setWord(data.word);
 
@@ -59,15 +67,16 @@ function Main() {
             setDisplayScore(false);
         })
 
-        socket.on("roundSetter", data => {
+        socket.on("round setter", data => {
             setRound(data);
+        })
+
+        socket.on("next player", (data) => {
+            setNextPlayer(true);
         })
 
     }, [socket])
 
-    useEffect(() => {
-        socket.emit("nickname", nickname);
-    }, [])
 
     return (
         <div className="container-fluid" style={{ padding: "2%" }}>
@@ -84,7 +93,7 @@ function Main() {
             </div>
 
             <div className="mt-1 mb-2 border rounded">
-                {showTimer ? <Timer socket={socket} /> : <GuessTimer socket={socket} />}
+                {showTimer ? <Timer socket={socket} nextPlayer={nextPlayer} /> : <GuessTimer socket={socket} />}
             </div>
 
             <div className="row">

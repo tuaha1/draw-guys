@@ -2,13 +2,24 @@ import { useEffect, useState } from "react";
 
 function Timer(props) {
     const socket = props.socket;
+    const nextPlayer = props.nextPlayer;
     const [timer, setTimer] = useState(0);
+
+    var interval;
+
+    if (nextPlayer === true) {
+        clearInterval(interval);
+        socket.emit("drawing done", socket.id);
+    }
 
     function startTimer(duration) {
         var start = Date.now();
 
-        var interval = setInterval(function () {
+        interval = setInterval(function () {
+            // var elapsed = Math.floor((Date.now() - start) / 500);
             var elapsed = Math.floor((Date.now() - start) / 500);
+
+
             if (elapsed >= duration) {
                 clearInterval(interval);
                 socket.emit("drawing done", socket.id);
@@ -21,14 +32,9 @@ function Timer(props) {
     }
 
     useEffect(() => {
+        clearInterval(interval);
         startTimer(100);
     }, []);
-
-    useEffect(() => {
-        socket.on("round hoga ba", () => {
-            socket.emit("drawing done", socket.id);
-        })
-    }, [socket])
 
     return (
         <div className="progress" style={{ height: "20px" }}>

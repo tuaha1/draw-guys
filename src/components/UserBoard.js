@@ -10,11 +10,11 @@ function UserBoard(props) {
     useEffect(() => {
         socket.on("receive nicknames", (data) => {
             let userList = data.map((e) => { return { name: e.nickname, score: e.score, id: e.id, guessed: e.hasGuessed } });
-            console.log(userList);
             setUsers(userList);
         })
 
         socket.on("who should draw", (data) => {
+            console.log("who should draw wala data bhai", data);
             setUserID(data.id);
         })
 

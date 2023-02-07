@@ -47,12 +47,25 @@ function Chat(props) {
         }
     }
 
+    function setMessageColor(data) {
+        // console.log('data mera beta', data);
+        if (data.name === 'the word was') {
+            return 'red';
+        }
+
+        if (data.message === 'this user has guessed the word') {
+            return 'green';
+        }
+
+        return 'black';
+    }
+
     return <div style={{
         height: "750px", display: "flex", flexDirection: "column", justifyContent: "end", padding: "0px"
     }} className="border rounded">
         <ul className="list-group list-group-flush" style={{ overflow: "auto" }}>
             {guessMessage.map((element, index) => {
-                return <li style={{ display: "flex" }} className="list-group-item" key={index}>{element.name}: {element.message}</li>
+                return <li style={{ color: setMessageColor(element), display: "flex" }} className="list-group-item" key={index}>{element.name}: {element.message}</li>
             })}
         </ul>
         <div style={{ display: "flex" }}>

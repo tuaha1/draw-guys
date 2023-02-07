@@ -14,8 +14,7 @@ function Menu() {
     }
 
     const updateChange = (e) => {
-
-        setInput(e.target.value)
+        setInput(e.target.value);
     }
 
     return <div style={{ paddingTop: "5%" }}>

@@ -89,7 +89,7 @@ function CanvasBoard(props) {
             onMouseUp={shouldDraw ? handleMouseUp : () => { }}
         >
         </canvas>
-        <div style={{ display: "flex", justifyContent: "space-between" }} className="border rounded p-3">
+        <div style={{ display: `${shouldDraw ? "flex" : "none"}`, justifyContent: "space-between" }} className="border rounded p-3">
 
             <div>
                 <input
