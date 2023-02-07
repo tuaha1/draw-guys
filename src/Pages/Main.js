@@ -11,7 +11,7 @@ import ScoreModal from "../components/ScoreModal";
 
 const port = "https://draw-guys-server.onrender.com";
 
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect(port);
 
 function Main() {
 
